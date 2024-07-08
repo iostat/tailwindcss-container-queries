@@ -247,3 +247,82 @@ it('should be possible to use default container queries', () => {
     `)
   })
 })
+
+it('should be possible to use default container queries while testing heights', () => {
+  let config = {
+    content: [
+      {
+        raw: html`
+          <div>
+            <div class="@h-md:underline"></div>
+            <div class="@h-lg:underline"></div>
+            <div class="@h-sm:underline"></div>
+            <div class="@h-xs:underline"></div>
+            <div class="@h-7xl:underline"></div>
+            <div class="@h-6xl:underline"></div>
+            <div class="@h-3xl:underline"></div>
+            <div class="@h-5xl:underline"></div>
+          </div>
+        `,
+      },
+    ],
+    theme: {},
+    corePlugins: { preflight: false },
+  }
+
+  let input = css`
+    @tailwind utilities;
+  `
+
+  return run(input, config).then((result) => {
+    expect(result.css).toMatchFormattedCss(css`
+      @container (height >= 20rem) {
+        .\@h-xs\:underline {
+          text-decoration-line: underline;
+        }
+      }
+
+      @container (height >= 24rem) {
+        .\@h-sm\:underline {
+          text-decoration-line: underline;
+        }
+      }
+
+      @container (height >= 28rem) {
+        .\@h-md\:underline {
+          text-decoration-line: underline;
+        }
+      }
+
+      @container (height >= 32rem) {
+        .\@h-lg\:underline {
+          text-decoration-line: underline;
+        }
+      }
+
+      @container (height >= 48rem) {
+        .\@h-3xl\:underline {
+          text-decoration-line: underline;
+        }
+      }
+
+      @container (height >= 64rem) {
+        .\@h-5xl\:underline {
+          text-decoration-line: underline;
+        }
+      }
+
+      @container (height >= 72rem) {
+        .\@h-6xl\:underline {
+          text-decoration-line: underline;
+        }
+      }
+
+      @container (height >= 80rem) {
+        .\@h-7xl\:underline {
+          text-decoration-line: underline;
+        }
+      }
+    `)
+  })
+})
